@@ -3,13 +3,16 @@ package winnie
 import scala.swing._
 import util.Random.nextInt
 import java.awt.{Dimension, Graphics2D, Color, Image, Toolkit, Font}
+import javax.sound.sampled._
+import java.io._
 
 object VoorRuben extends SimpleSwingApplication {
 
   import scala.swing.event._
   import scala.swing.event.Key._
-
+  var activeClips : List[Clip] = Nil
   var game = new Game()
+
 
   override def top = new MainFrame {
     title = "Ruben en Winnie"
@@ -43,7 +46,11 @@ object VoorRuben extends SimpleSwingApplication {
 
 class Game {
   var winnie = Winnie.initialPos
+  var steps = 0;
+
+
   def active = !honeypots.isEmpty
+
 
     val offset = Point(10, 30)
   // position top-left cell
@@ -53,10 +60,13 @@ class Game {
   val bordHeight = 17
 
   var honeypots = {
-    val limit = 3 + nextInt(7)
+    val limit = 4 + nextInt(8)
     for (i <- 1 until limit)
       yield Point(nextInt(bordWidth), nextInt(bordHeight))
   }
+
+  VoorRuben.activeClips.foreach(_.stop)
+  playSound("luvhunny")
 
   def dim = Point(bordWidth, bordHeight) * cellSize
 
@@ -64,9 +74,26 @@ class Game {
 
   def doMove(direction: Direction) {
     val p = direction.nextPoint(winnie)
-    if (!(p.x < 0 || p.y < 0 || p.x >= bordWidth || p.y >= bordHeight))
+
+
+    if (!(p.x < 0 || p.y < 0 || p.x >= bordWidth || p.y >= bordHeight)) {
       winnie = p
-    honeypots = honeypots.filter(_ != winnie)
+      steps += 1
+    }
+
+    val honeyFound = honeypots contains winnie
+
+    if (honeyFound) {
+      honeypots = honeypots.filter(_ != winnie)
+      playSound("smack")
+    } else {
+      if(steps % 8 == 0)
+        playSound("dumdum")
+    }
+
+    if(!active)
+      playSound("rumblysong")
+
   }
 
   def draw(g: Graphics2D) {
@@ -98,6 +125,15 @@ class Game {
     val c = cell(p)
     g.drawImage(img, c.x, c.y, null)
   }
+
+  def playSound(sound: String) {
+    val clip = AudioSystem.getClip();
+    val inputStream = AudioSystem.getAudioInputStream(new FileInputStream(sound + ".wav"));
+    clip.open(inputStream);
+    VoorRuben.activeClips ::= clip
+    clip.start
+  }
+
 
 }
 
