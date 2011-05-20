@@ -87,7 +87,7 @@ class Game {
       honeypots = honeypots.filter(_ != winnie)
       playSound("smack")
     } else {
-      if(steps % 8 == 0)
+      if(steps % 9 == 0)
         playSound("dumdum")
     }
 
@@ -102,11 +102,13 @@ class Game {
     g.fillRect(offset.x, offset.y, dim.x, dim.y)
     g.setColor(Color.black)
     g.drawRect(offset.x, offset.y, dim.x, dim.y)
+    g.drawImage(Winnie.background, offset.x + 1, offset.y + 1, dim.x - 1, dim.y - 1, null)
     // draw objects
     drawHoneyPots(g)
     drawWinnie(g)
+
     if(!active) {
-      g.setColor(Color.green)
+      g.setColor(Color.black)
       g.setFont(new Font("sansserif", Font.BOLD, 50))
       g.drawString("Ruben wint", 100, 200)
     }
@@ -142,6 +144,7 @@ object Winnie {
   private val toolkit = Toolkit.getDefaultToolkit()
   val img = toolkit.getImage("winnie.png")
   val hunnyImg = toolkit.getImage("hunny.png")
+  val background = toolkit.getImage("background.png")
 
   def initialPos: Point =
     Point(5, 5)
