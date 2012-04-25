@@ -36,7 +36,7 @@ case class CitiesInput(cities: Seq[String])
 case class NearestCities(cities: Seq[City])
 
 class NearestCityActor(resultListener: ActorRef, lat: Double, lng: Double)  extends Actor {
-  val searchBound = 0.4
+  
   
   def receive = {
     case CitiesInput(cities) => resultListener ! findTopNearestCities(cities)
@@ -46,17 +46,20 @@ class NearestCityActor(resultListener: ActorRef, lat: Double, lng: Double)  exte
   def findTopNearestCities(cities: Seq[String]): NearestCities = {
       val nearest = cities
 	      .map(City(_))
-	      .filter(city => isNear(city) && city.population.isDefined)
+	      .filter(city => city.isNear(lat, lng) && city.population.isDefined)
 
 	  NearestCities(nearest)
   }
   
-  def isNear(city: City) : Boolean = {
-    math.abs(lat - city.lat) < searchBound && math.abs(lng - city.lng) < searchBound
-  }
 }
 
-case class City(name: String, population:Option[Int], lat: Double, lng: Double)
+case class City(name: String, population:Option[Int], lat: Double, lng: Double) {
+  val searchBound = 0.4
+  
+  def isNear(targetLat: Double, targetLng: Double) = 
+    math.abs(lat - targetLat) < searchBound && math.abs(lng - targetLng) < searchBound
+}
+
 object City {
   def apply(input: String): City = {
     val fields = input.split(",")
