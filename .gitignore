@@ -1,4 +1,6 @@
 *.swp
+**/*.cache
+*/project/
 **/bin/
 **/target/
 worldcitiespop.txt
