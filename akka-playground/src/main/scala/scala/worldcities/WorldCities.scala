@@ -56,8 +56,11 @@ class NearestCityActor(resultListener: ActorRef, lat: Double, lng: Double)  exte
 case class City(name: String, population:Option[Int], lat: Double, lng: Double) {
   val searchBound = 0.4
   
-  def isNear(targetLat: Double, targetLng: Double) = 
-    math.abs(lat - targetLat) < searchBound && math.abs(lng - targetLng) < searchBound
+  //def isNear(targetLat: Double, targetLng: Double) = 
+  //  math.abs(lat - targetLat) < searchBound && math.abs(lng - targetLng) < searchBound
+  def isNear(targetLat: Double, targetLng: Double) = {
+     math.sqrt(math.pow(lat-targetLat, 2) + math.pow(lng-targetLng, 2)) < searchBound
+  }
 }
 
 object City {

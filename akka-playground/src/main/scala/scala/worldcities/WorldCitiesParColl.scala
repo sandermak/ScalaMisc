@@ -12,6 +12,11 @@ object WorldCitiesParColl extends App {
     cities.par
       .map(City(_))
       .filter(city => city.isNear(lat, lng) && city.population.isDefined)
+//  val nearestCities = 
+//    cities.par
+//      .flatMap(line => { val city = City(line); if(city.isNear(lat, lng) && city.population.isDefined) Some(city) else None})
+
+
   val end = System.currentTimeMillis
  
   nearestCities.toList.sortBy(_.population).map(println)
