@@ -3,6 +3,7 @@ package scalagreeter
 import akka.actor._
 
 object Greeter extends App {
+  
   case class Greeting(who: String)
  
   class GreetingActor extends Actor with ActorLogging {

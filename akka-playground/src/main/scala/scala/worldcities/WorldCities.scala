@@ -12,7 +12,7 @@ object WorldCities extends App {
   val lng = 4.7
   
   println("Reading world cities")
-  lazy val cities = io.Source.fromFile("worldcitiespop.txt", "ISO-8859-1").getLines
+  val cities = io.Source.fromFile("worldcitiespop.txt", "ISO-8859-1").getLines
   val segmentSize = 15000
   val segmentedCities = cities.grouped(segmentSize).toList
   
@@ -56,8 +56,7 @@ class NearestCityActor(resultListener: ActorRef, lat: Double, lng: Double)  exte
 case class City(name: String, population:Option[Int], lat: Double, lng: Double) {
   val searchBoundSquared = math.pow(0.4, 2)
   
-  //def isNear(targetLat: Double, targetLng: Double) = 
-  //  math.abs(lat - targetLat) < searchBound && math.abs(lng - targetLng) < searchBound
+  // (lat-targetLat)^2 + (lng-targetLng)^2 < 0.4^2
   def isNear(targetLat: Double, targetLng: Double) = {
      math.pow(lat-targetLat, 2) + math.pow(lng-targetLng, 2) < searchBoundSquared
   }
