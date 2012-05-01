@@ -7,6 +7,7 @@ import akka.util.duration._
 import akka.dispatch.Await
 
 object Greeter extends App {
+  
   case class Greeting(who: String)
   case class FutureGreeting(who: String)
  
