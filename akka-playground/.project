@@ -1,5 +1,5 @@
 <projectDescription>
-  <name>My Project</name>
+  <name>Akka demo's</name>
   <buildSpec>
     <buildCommand>
       <name>org.scala-ide.sdt.core.scalabuilder</name>

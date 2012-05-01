@@ -1,4 +1,4 @@
-name := "My Project"
+name := "Akka demo's"
  
 version := "1.0"
  
