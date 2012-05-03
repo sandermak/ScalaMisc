@@ -28,8 +28,8 @@ object Greeter extends App {
   // The ask pattern models a reply by an actor with a Future
   import akka.pattern.ask
   
-  val timeout = Timeout(2 seconds)
-  val greeting = ask(greeter, FutureGreeting("Sander"))(timeout);
+  implicit val timeout = Timeout(2 seconds)
+  val greeting = ask(greeter, FutureGreeting("Sander"));
   println(Await.result(greeting, timeout.duration))
   
   system.shutdown

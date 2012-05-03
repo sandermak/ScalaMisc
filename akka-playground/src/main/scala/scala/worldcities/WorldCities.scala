@@ -15,7 +15,6 @@ object WorldCities extends App {
   val cities = io.Source.fromFile("worldcitiespop.txt", "ISO-8859-1").getLines
   val segmentSize = 15000
   val segmentedCities = cities.grouped(segmentSize).toList
-  
   println("Number of cities: " + segmentedCities.map(_.size).sum)
   
   val actorSystem = ActorSystem("WorldCities")
@@ -77,7 +76,11 @@ class ResultListener(nrOfResults: Int, startTime: Long) extends Actor {
   var cities: Seq[City] = scala.collection.mutable.ArrayBuffer()
   
   def receive = {
-    case NearestCities(nearestCities) => cities ++= nearestCities; toReceive -= 1; if(toReceive == 0) printresults();
+    case NearestCities(nearestCities) =>  {
+      cities ++= nearestCities; 
+      toReceive -= 1; 
+      if(toReceive == 0) printresults();
+    }
   }
   
   def printresults() {
