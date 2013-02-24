@@ -5,7 +5,7 @@ object WorldCitiesParColl extends App {
   val lat = 50.88
   val lng = 4.7
   println("Reading world cities")
-  val cities = io.Source.fromFile("worldcitiespop.txt", "ISO-8859-1").getLines.toList
+  val cities = io.Source.fromFile("worldcitiespop.txt", "ISO-8859-1").getLines.toBuffer
   println("Number of cities: " + cities.size)
   
   val startTime = System.currentTimeMillis
